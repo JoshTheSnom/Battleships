@@ -1,352 +1,175 @@
 import java.util.*;
 public class Lode {
-	public static int rows = 10;
+		public static int rows = 10;
 	public static int columns = 10;
 	public static String grid[][] = new String[columns][rows];
 	public static String grid2[][] = new String[columns][rows];
+	public static String battlegrid[][] = new String[columns][rows];
+	public static String battlegrid2[][] = new String[columns][rows];
 	public static int playerOneShips;
 	public static int playerTwoShips;
 	public static void main(String args[]){
 		
-		createOneMap();
-		placeOneShips();
+		placeOneShips();	
+		placeTwoShips();		
 		
-		createTwoMap();
-		placeTwoShips();
-		
+		createBattleMaps();
 		do {
             Battle();
         }while(Lode.playerOneShips != 0 && Lode.playerTwoShips != 0);
 		
 		gameOver();
 	}
+	public static void createBattleMaps() {
+		for(int i = 0; i < battlegrid.length;i++) {
+			for(int j = 0; j < battlegrid[i].length;j++) {
+				battlegrid[i][j] = " ";
+			}
+		}
+		for(int i = 0; i < battlegrid2.length;i++) {
+			for(int j = 0; j < battlegrid2[i].length;j++) {
+				battlegrid2[i][j] = " ";
+			}
+		}
+	}
+	public static void printOneBattleMap() {
+		System.out.println("\nHere is the battle map for Player 1");
+
+        System.out.print("  ");
+        for(int i = 0; i < rows; i++)
+            System.out.print(i);
+        System.out.println();
+
+        for(int y = 0; y < battlegrid.length; y++) {
+            System.out.print(y + "|");
+
+            for (int x = 0; x < battlegrid[y].length; x++){
+                System.out.print(battlegrid[x][y]);
+            }
+
+            System.out.println("|" + y);
+        }
+
+        System.out.print("  ");
+        for(int i = 0; i < rows; i++)
+            System.out.print(i);
+        System.out.println();
+    }
+	public static void printTwoBattleMap() {
+		System.out.println("\nHere is the battle map for Player 2");
+
+        System.out.print("  ");
+        for(int i = 0; i < rows; i++)
+            System.out.print(i);
+        System.out.println();
+
+        for(int y = 0; y < battlegrid2.length; y++) {
+            System.out.print(y + "|");
+
+            for (int x = 0; x < battlegrid2[y].length; x++){
+                System.out.print(battlegrid2[x][y]);
+            }
+
+            System.out.println("|" + y);
+        }
+
+        System.out.print("  ");
+        for(int i = 0; i < rows; i++)
+            System.out.print(i);
+        System.out.println();
+    }
 	
-	public static void createOneMap() {
-		System.out.print("  ");
-		for(int i = 0; i < rows; i++) System.out.print(i);
-		System.out.println();
+	public static void placeOneShips() {
 		
 		for(int i = 0; i < grid.length;i++) {
 			for(int j = 0; j < grid[i].length;j++) {
-				grid[i][j] = " ";	
-				if(j == 0) System.out.print(i + "|" + grid[i][j]);
-				else if(j == grid[i].length - 1) System.out.print(grid[i][j] + "|" + i);
-				else System.out.print(grid[i][j]);	
+				grid[i][j] = " ";
 			}
-			System.out.println();
 		}
 		
-		System.out.print("  ");
-		for(int i = 0; i < rows; i++) System.out.print(i);
-		System.out.println();
+		//letadlova lod
+        grid[0][0] = "@";
+        grid[0][1] = "@";
+        grid[0][2] = "@";
+        grid[0][3] = "@";
+        grid[0][4] = "@";
+
+        //bitevni lod
+        grid[5][2] = "@";
+        grid[6][2] = "@";
+        grid[7][2] = "@";
+        grid[8][2] = "@";
+
+        //kriznik 1
+        grid[3][6] = "@";
+        grid[4][6] = "@";
+        grid[5][6] = "@";
+
+        //kriznik 2
+        grid[7][4] = "@";
+        grid[8][4] = "@";
+        grid[9][4] = "@";
+
+        //hlidkova lod 1
+        grid[8][0] = "@";
+        grid[9][0] = "@";
+
+        //hlidkova lod 2
+        grid[1][5] = "@";
+        grid[1][6] = "@";
+		
+		Lode.playerOneShips = 19;
 	}
-	public static void createTwoMap() {
-		System.out.print("  ");
-		for(int i = 0; i < rows; i++) System.out.print(i);
-		System.out.println();
+	public static void placeTwoShips() {
 		
 		for(int i = 0; i < grid2.length;i++) {
 			for(int j = 0; j < grid2[i].length;j++) {
-				grid2[i][j] = " ";	
-				if(j == 0) System.out.print(i + "|" + grid2[i][j]);
-				else if(j == grid2[i].length - 1) System.out.print(grid2[i][j] + "|" + i);
-				else System.out.print(grid2[i][j]);	
+				grid2[i][j] = " ";
 			}
-			System.out.println();
 		}
 		
-		System.out.print("  ");
-		for(int i = 0; i < rows; i++) System.out.print(i);
-		System.out.println();
-	}
-	
-	public static void placeOneShips() {
-		Scanner input = new Scanner(System.in);
-		Lode.playerOneShips = 19;
-		for(int i = 1; i <= 6; ) {
-			if(i==1) System.out.print("Enter X coordinate for the tail of your five tiles long ship: ");
-			else if(i==2) System.out.print("Enter X coordinate for the tail of your four tiles long ship: ");
-			else if(i<=4) System.out.print("Enter X coordinate for the tail of your three tiles long ship: ");
-			else System.out.print("Enter X coordinate for the tail of your two tiles spaces long ship: ");
-			int x = input.nextInt();
-			
-			if(i==1) System.out.print("Enter Y coordinate for the tail of your five tiles long ship: ");
-			else if(i==2) System.out.print("Enter Y coordinate for the tail of your four tiles long ship: ");
-			else if(i<=4) System.out.print("Enter Y coordinate for the tail of your three tiles long ship: ");
-			else System.out.print("Enter Y coordinate for the tail of your two tiles long ship: ");
-			int y = input.nextInt();
-			
-			boolean check = false;
-			if((x >= 0 && x < columns) && (y >= 0 && y < rows) && (grid[x][y] == " ")) {
-				grid[x][y] = "@";
-				check = true;
-			}
-			else if((x >= 0 && x < columns) && (y >= 0 && y < rows) && (grid[x][y] == "@")) {
-				System.out.println("You can't place two or more ships in the same location.");
-			}
-			else if((x < 0 && x >= columns) && (y < 0 && y >= rows)) {
-				System.out.println("You can't place ships outside the " + columns + " by " + rows + " grid");
-			}
-			
-			if(i==1) System.out.print("Enter X coordinate for the front of your five tiles long ship: ");
-			else if(i==2) System.out.print("Enter X coordinate for the front of your four tiles long ship: ");
-			else if(i<=4) System.out.print("Enter X coordinate for the front of your three tiles long ship: ");
-			else System.out.print("Enter X coordinate for the front of your two tiles spaces long ship: ");
-			int x2 = input.nextInt();
-			
-			if(i==1) System.out.print("Enter Y coordinate for the front of your five tiles long ship: ");
-			else if(i==2) System.out.print("Enter Y coordinate for the front of your four tiles long ship: ");
-			else if(i<=4) System.out.print("Enter Y coordinate for the front of your three tiles long ship: ");
-			else System.out.print("Enter Y coordinate for the front of your two tiles long ship: ");
-			int y2 = input.nextInt();
-			
-			if((x2 >= 0 && x2 < columns) && (y2 >= 0 && y2 < rows) && (grid[x2][y2] == " ") && (x2 == x) || (y2 == y)){
-				if(i==1) {
-					if(x2 == x) {
-						if(y+4 == y2) for(int a = y; a <= y2; a++) grid[x][a] = "@";
-						else if(y2+4 == y) for(int a = y2; a <= y; a++) grid[x][a] = "@";
-						else {
-							System.out.println("The ship is not the correct size.");
-							check = false;
-						}
-					}
-					else if(y2 == y){
-						if(x+4 == x2) for(int a = x; a <= x2; a++) grid[a][y] = "@";
-						else if(x2+4 == x) for(int a = x2; a <= x; a++) grid[a][y] = "@";
-						else {
-							System.out.println("The ship is not the correct size.");
-							check = false;
-						}
-					}
-					else {
-						System.out.println("The ship is not straight.");
-						check = false;
-					}
-				}
-				else if(i==2) {
-					if(x2 == x) {
-						if(y+3 == y2) for(int a = y; a <= y2; a++) grid[x][a] = "@";
-						else if(y2+3 == y) for(int a = y2; a <= y; a++) grid[x][a] = "@";
-						else {
-							System.out.println("The ship is not the correct size.");
-							check = false;
-						}
-					}
-					else if(y2 == y){
-						if(x+3 == x2) for(int a = x; a <= x2; a++) grid[a][y] = "@";
-						else if(x2+3 == x) for(int a = x2; a <= x; a++) grid[a][y] = "@";
-						else {
-							System.out.println("The ship is not the correct size.");
-							check = false;
-						}
-					}
-					else {
-						System.out.println("The ship is not straight.");
-						check = false;
-					}
-				}
-				else if (i <= 4) {
-					if(x2 == x) {
-						if(y+2 == y2) for(int a = y; a <= y2; a++) grid[a][y] = "@";
-						else if(y2+2 == y) for(int a = y2; a <= y; a++) grid[a][y] = "@";
-						else {
-							System.out.println("The ship is not the correct size.");
-							check = false;
-						}
-					}
-					else if(y2 == y){
-						if(x+2 == x2) for(int a = x; a <= x2; a++) grid[a][y] = "@";
-						else if(x2+2 == x) for(int a = x2; a <= x; a++) grid[a][y] = "@";
-						else {
-							System.out.println("The ship is not the correct size.");
-							check = false;
-						}
-					}
-					else {
-						System.out.println("The ship is not straight.");
-						check = false;
-					}
-				}
-				else{
-					if(x2 == x) {
-						if(y+1 == y2) for(int a = y; a <= y2; a++) grid[a][y] = "@";
-						else if(y2+1 == y) for(int a = y2; a <= y; a++) grid[a][y] = "@";
-						else {
-							System.out.println("The ship is not the correct size.");
-							check = false;
-						}
-					}
-					else if(y2 == y){
-						if(x+1 == x2) for(int a = x; a <= x2; a++) grid[a][y] = "@";
-						else if(x2+1 == x) for(int a = x2; a <= x; a++) grid[a][y] = "@";
-						else {
-							System.out.println("The ship is not the correct size.");
-							check = false;
-						}
-					}
-					else {
-						System.out.println("The ship is not straight.");
-						check = false;
-					}
-				}
-				if(check == true) i++;
-			}
-			else if((x2 >= 0 && x2 < columns) && (y2 >= 0 && y2 < rows) && (grid[x2][y2] == "@")) {
-				System.out.println("You can't place two or more ships in the same location.");
-			}
-			else if((x2 < 0 && x2 >= columns) && (y2 < 0 && y2 >= rows)) {
-				System.out.println("You can't place ships outside the " + columns + " by " + rows + " grid");
-			}
-			printOneMap();
-		}
-	}
-	public static void placeTwoShips() {
-		Scanner input = new Scanner(System.in);
-		Lode.playerTwoShips = 19;
-		for(int i = 1; i <= 6; ) {
-			if(i==1) System.out.print("Enter X coordinate for the tail of your five tiles long ship: ");
-			else if(i==2) System.out.print("Enter X coordinate for the tail of your four tiles long ship: ");
-			else if(i<=4) System.out.print("Enter X coordinate for the tail of your three tiles long ship: ");
-			else System.out.print("Enter X coordinate for the tail of your two tiles spaces long ship: ");
-			int x = input.nextInt();
-			
-			if(i==1) System.out.print("Enter Y coordinate for the tail of your five tiles long ship: ");
-			else if(i==2) System.out.print("Enter Y coordinate for the tail of your four tiles long ship: ");
-			else if(i<=4) System.out.print("Enter Y coordinate for the tail of your three tiles long ship: ");
-			else System.out.print("Enter Y coordinate for the tail of your two tiles long ship: ");
-			int y = input.nextInt();
-			
-			boolean check = false;
-			if((x >= 0 && x < columns) && (y >= 0 && y < rows) && (grid2[x][y] == " ")) {
-				grid2[x][y] = "@";
-				check = true;
-			}
-			else if((x >= 0 && x < columns) && (y >= 0 && y < rows) && (grid2[x][y] == "@")) {
-				System.out.print("You can't place two or more ships in the same location.");
-			}
-			else if((x < 0 && x >= columns) && (y < 0 && y >= rows)) {
-				System.out.print("You can't place ships outside the " + columns + " by " + rows + " grid");
-			}
-			
-			if(i==1) System.out.print("Enter X coordinate for the front of your five tiles long ship: ");
-			else if(i==2) System.out.print("Enter X coordinate for the front of your four tiles long ship: ");
-			else if(i<=4) System.out.print("Enter X coordinate for the front of your three tiles long ship: ");
-			else System.out.print("Enter X coordinate for the front of your two tiles spaces long ship: ");
-			int x2 = input.nextInt();
-			
-			if(i==1) System.out.print("Enter Y coordinate for the front of your five tiles long ship: ");
-			else if(i==2) System.out.print("Enter Y coordinate for the front of your four tiles long ship: ");
-			else if(i<=4) System.out.print("Enter Y coordinate for the front of your three tiles long ship: ");
-			else System.out.print("Enter Y coordinate for the front of your two tiles long ship: ");
-			int y2 = input.nextInt();
-			
-			if((x2 >= 0 && x2 < columns) && (y2 >= 0 && y2 < rows) && (grid2[x2][y2] == " ") && (x2 == x) || (y2 == y)){
-				if(i==1) {
-					if(x2 == x) {
-						if(y+4 == y2) for(int a = y; a <= y2; a++) grid2[x][a] = "@";
-						else if(y2+4 == y) for(int a = y2; a <= y; a++) grid2[x][a] = "@";
-						else {
-							System.out.println("The ship is not the correct size.");
-							check = false;
-						}
-					}
-					else if(y2 == y){
-						if(x+4 == x2) for(int a = x; a <= x2; a++) grid2[a][y] = "@";
-						else if(x2+4 == x) for(int a = x2; a <= x; a++) grid2[a][y] = "@";
-						else {
-							System.out.println("The ship is not the correct size.");
-							check = false;
-						}
-					}
-					else {
-						System.out.println("The ship is not straight.");
-						check = false;
-					}
-				}
-				else if(i==2) {
-					if(x2 == x) {
-						if(y+3 == y2) for(int a = y; a <= y2; a++) grid2[x][a] = "@";
-						else if(y2+3 == y) for(int a = y2; a <= y; a++) grid2[x][a] = "@";
-						else {
-							System.out.println("The ship is not the correct size.");
-							check = false;
-						}
-					}
-					else if(y2 == y){
-						if(x+3 == x2) for(int a = x; a <= x2; a++) grid2[a][y] = "@";
-						else if(x2+3 == x) for(int a = x2; a <= x; a++) grid2[a][y] = "@";
-						else {
-							System.out.println("The ship is not the correct size.");
-							check = false;
-						}
-					}
-					else {
-						System.out.println("The ship is not straight.");
-						check = false;
-					}
-				}
-				else if (i <= 4) {
-					if(x2 == x) {
-						if(y+2 == y2) for(int a = y; a <= y2; a++) grid2[a][y] = "@";
-						else if(y2+2 == y) for(int a = y2; a <= y; a++) grid2[a][y] = "@";
-						else {
-							System.out.println("The ship is not the correct size.");
-							check = false;
-						}
-					}
-					else if(y2 == y){
-						if(x+2 == x2) for(int a = x; a <= x2; a++) grid2[a][y] = "@";
-						else if(x2+2 == x) for(int a = x2; a <= x; a++) grid2[a][y] = "@";
-						else {
-							System.out.println("The ship is not the correct size.");
-							check = false;
-						}
-					}
-					else {
-						System.out.println("The ship is not straight.");
-						check = false;
-					}
-				}
-				else{
-					if(x2 == x) {
-						if(y+1 == y2) for(int a = y; a <= y2; a++) grid2[a][y] = "@";
-						else if(y2+1 == y) for(int a = y2; a <= y; a++) grid2[a][y] = "@";
-						else {
-							System.out.println("The ship is not the correct size.");
-							check = false;
-						}
-					}
-					else if(y2 == y){
-						if(x+1 == x2) for(int a = x; a <= x2; a++) grid2[a][y] = "@";
-						else if(x2+1 == x) for(int a = x2; a <= x; a++) grid2[a][y] = "@";
-						else {
-							System.out.println("The ship is not the correct size.");
-							check = false;
-						}
-					}
-					else {
-						System.out.println("The ship is not straight.");
-						check = false;
-					}
-				}
-				if(check == true) i++;
-			}
-			else if((x2 >= 0 && x2 < columns) && (y2 >= 0 && y2 < rows) && (grid2[x2][y2] == "@")) {
-				System.out.println("You can't place two or more ships in the same location.");
-			}
-			else if((x2 < 0 && x2 >= columns) && (y2 < 0 && y2 >= rows)) {
-				System.out.println("You can't place ships outside the " + columns + " by " + rows + " grid");
-			}
-			printTwoMap();
-		}
+		//letadlova lod
+        grid2[5][9] = "@";
+        grid2[6][9] = "@";
+        grid2[7][9] = "@";
+        grid2[8][9] = "@";
+        grid2[9][9] = "@";
+
+        //bitevni lod
+        grid2[0][2] = "@";
+        grid2[0][3] = "@";
+        grid2[0][4] = "@";
+        grid2[0][5] = "@";
+
+        //kriznik 1
+        grid2[5][2] = "@";
+        grid2[6][2] = "@";
+        grid2[7][2] = "@";
+
+        //kriznik 2
+        grid2[9][5] = "@";
+        grid2[9][6] = "@";
+        grid2[9][7] = "@";
+
+        //hlidkova lod 1
+        grid2[0][7] = "@";
+        grid2[1][7] = "@";
+
+        //hlidkova lod 2
+        grid2[5][5] = "@";
+        grid2[5][6] = "@";
+			Lode.playerOneShips = 19;
 	}
 	
 	public static void Battle(){
-		playerOneTurn();
 		printOneMap();
+		printOneBattleMap();
+		playerOneTurn();
 		
-		playerTwoTurn();
 		printTwoMap();
+		printTwoBattleMap();
+		playerTwoTurn();
+		
 	}
     public static void playerOneTurn(){
         System.out.println("\nTURN OF PLAYER 1");
@@ -365,17 +188,20 @@ public class Lode {
                 if (grid2[x][y] == "@")
                 {
                     System.out.println("You hit the ship!");
-                    grid2[x][y] = "!";
-                    --BattleShips.computerShips;
+                    battlegrid[x][y] = "!";
+					grid2[x][y] = "X";
+                    --Lode.playerTwoShips;
                 }
                 else if (grid2[x][y] == " ") {
                     System.out.println("Sorry, you missed.");
-                    grid2[x][y] = "-";
+                    battlegrid[x][y] = "-";
+					grid2[x][y] = "-";
                 }
             }
             else if ((x < 0 || x >= columns) || (y < 0 || y >= rows))
                 System.out.println("You can't place ships outside the " + columns + " by " + rows + " grid");
         }while((x < 0 || x >= columns) || (y < 0 || y >= rows));
+		enter.nextLine();
     }
 	public static void playerTwoTurn(){
         System.out.println("\nTURN OF PLAYER 2");
@@ -394,17 +220,22 @@ public class Lode {
                 if (grid[x][y] == "@")
                 {
                     System.out.println("You hit the ship!");
-                    grid[x][y] = "!";
-                    --BattleShips.computerShips;
+                    battlegrid2[x][y] = "!";
+					grid[x][y] = "X";
+                    --Lode.playerTwoShips;
                 }
                 else if (grid[x][y] == " ") {
                     System.out.println("Sorry, you missed.");
-                    grid[x][y] = "-";
+                    battlegrid2[x][y] = "-";
+					grid[x][y] = "-";
                 }
             }
             else if ((x < 0 || x >= columns) || (y < 0 || y >= rows))
                 System.out.println("You can't place ships outside the " + columns + " by " + rows + " grid");
         }while((x < 0 || x >= columns) || (y < 0 || y >= rows));
+		
+		enter.nextLine();
+		
     }
 	
 	public static void gameOver(){
@@ -416,7 +247,9 @@ public class Lode {
    }
 	
 	public static void printOneMap(){
-        System.out.println();
+        System.out.println("\nHere is the map of Player 1");
+		Scanner enter = new Scanner(System.in);
+		enter.nextLine();
 
         System.out.print("  ");
         for(int i = 0; i < rows; i++)
@@ -437,9 +270,14 @@ public class Lode {
         for(int i = 0; i < rows; i++)
             System.out.print(i);
         System.out.println();
+		
+		enter.nextLine();
+		
     }
 	public static void printTwoMap(){
-        System.out.println();
+        System.out.println("\nHere is the map of Player 2");
+		Scanner enter = new Scanner(System.in);
+		enter.nextLine();
 
         System.out.print("  ");
         for(int i = 0; i < rows; i++)
@@ -460,5 +298,8 @@ public class Lode {
         for(int i = 0; i < rows; i++)
             System.out.print(i);
         System.out.println();
+		
+		enter.nextLine();
+		
     }
 }
